@@ -4,36 +4,45 @@ import java.util.function.Predicate;
 
 public class Tree<T> {
 
+    private TreeElement<T> root;
+    private Comparator<T> comp;
+
     public Tree(Comparator<T> comp) {
+        root  = new Leaf<T>();
+        this.comp = comp;
     }
 
     public void insert(T value) {
+        root = root.insert(value,comp);
     }
 
     @Override
     public String toString() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        root.toString(sb);
+        return sb.toString();
     }
 
     public int size() {
-        return -1;
+        return root.size();
     }
 
     public void remove(T value) {
+        root = root.remove(value,comp);
     }
     
     public boolean contains(T value) {
-        return false;
+        return root.contains(value,comp);
     }
 
     public int countMatches(Predicate<T> filter) {
-        return -1;
+        return root.countMatches(filter);
     }
 
     public T[] getAll(Predicate<T> filter) {
-        // Generics und Arrays vertragen sich nicht besonders gut
         @SuppressWarnings("unchecked")
         T[] array = (T[]) new Object[countMatches(filter)];
-        return null;
+        root.getAll(filter,array,0);
+        return array;
     }
 }
